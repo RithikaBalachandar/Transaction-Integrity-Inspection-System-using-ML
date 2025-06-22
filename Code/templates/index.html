@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transaction Integrity Inspection System</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+      :root {
+        --primary-color: #1e40af;
+        --primary-light: #3b82f6;
+        --primary-dark: #1e3a8a;
+        --secondary-color: #10b981;
+        --accent-color: #f59e0b;
+        --danger-color: #dc2626;
+        --success-color: #059669;
+        --bg-color: #f9fafb;
+        --text-color: #1f2937;
+        --border-radius: 0.5rem;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      .page-wrapper {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #4b5563;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: var(--border-radius);
+        background-color: white;
+        font-size: 1rem;
+        transition: var(--transition);
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--primary-light);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+
+      .form-input::placeholder {
+        color: #9ca3af;
+      }
+
+      .submit-button {
+        background: linear-gradient(to right, #2563eb, #1d4ed8);
+        color: white;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .submit-button:hover {
+        background: linear-gradient(to right, #1d4ed8, #1e40af);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(37, 99, 235, 0.3);
+      }
+
+      .action-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+        color: white;
+        text-decoration: none;
+        transition: var(--transition);
+        box-shadow: var(--box-shadow);
+        cursor: pointer;
+      }
+
+      .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
+        .submit-button {
+          width: 100%;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <header class="bg-gradient-to-r from-blue-800 to-blue-900 text-white p-4 shadow-md">
+        <div class="container mx-auto flex items-center justify-between">
+          <div class="flex items-center">
+            <i class="fas fa-shield-alt text-2xl mr-3 text-blue-200"></i>
+            <h1 class="text-2xl md:text-3xl font-bold">Transaction Integrity Inspection System</h1>
+          </div>
+          <div class="hidden md:block">
+            <span class="bg-blue-700 py-1 px-3 rounded-full text-sm font-medium">
+              <i class="fas fa-lock mr-1"></i> Secure Portal
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <main class="container mx-auto px-4 py-6">
+        <div class="max-w-3xl mx-auto">
+          <div class="bg-blue-50 rounded-lg p-4 mb-6 shadow-sm border border-blue-100">
+            <div class="flex items-start">
+              <i class="fas fa-info-circle text-blue-500 mt-1 mr-3 text-xl"></i>
+              <div>
+                <h2 class="font-semibold text-blue-800 text-lg">Transaction Verification</h2>
+                <p class="text-blue-700 text-sm mt-1">
+                  Fill in the transaction details below to verify its integrity. Our system will analyze the data to detect potential fraudulent activity.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 py-4 px-6">
+              <h2 class="text-xl font-semibold text-white">
+                <i class="fas fa-exchange-alt mr-2"></i> Transaction Details
+              </h2>
+            </div>
+
+            <form action="/predict" method="POST" class="p-6" id="transaction-form">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                  <label for="type" class="form-label">
+                    <i class="fas fa-tag text-blue-500 mr-1"></i> Transaction Type
+                  </label>
+                  <select id="type" name="type" class="form-input" required>
+                    <option value="" disabled selected>Select transaction type</option>
+                    <option value="1">CASH OUT</option>
+                    <option value="2">PAYMENT</option>
+                    <option value="3">DEBIT</option>
+                    <option value="4">TRANSFER</option>
+                    <option value="5">CASH IN</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="amount" class="form-label">
+                    <i class="fas fa-dollar-sign text-blue-500 mr-1"></i> Amount
+                  </label>
+                  <input id="amount" type="number" name="amount" placeholder="Transaction amount" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="oldbalance" class="form-label">
+                    <i class="fas fa-wallet text-blue-500 mr-1"></i> Old Balance
+                  </label>
+                  <input id="oldbalance" type="number" name="oldbalance" placeholder="Previous account balance" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="newbalance" class="form-label">
+                    <i class="fas fa-wallet text-blue-500 mr-1"></i> New Balance
+                  </label>
+                  <input id="newbalance" type="number" name="newbalance" placeholder="Current account balance" class="form-input" readonly>
+                </div>
+
+                <div class="form-group">
+                  <label for="sender_id" class="form-label">
+                    <i class="fas fa-user text-blue-500 mr-1"></i> Sender ID
+                  </label>
+                  <input id="sender_id" type="text" name="sender_id" placeholder="ID of the sender" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="receiver_id" class="form-label">
+                    <i class="fas fa-user-plus text-blue-500 mr-1"></i> Receiver ID
+                  </label>
+                  <input id="receiver_id" type="text" name="receiver_id" placeholder="ID of the receiver" class="form-input" required>
+                </div>
+
+                <div class="form-group md:col-span-2">
+                  <label for="step" class="form-label">
+                    <i class="fas fa-clock text-blue-500 mr-1"></i> Transaction Hour (0-23)
+                  </label>
+                  <input id="step" type="number" name="step" min="0" max="23" placeholder="Hour of the day (0-23)" class="form-input max-w-xs" required>
+                </div>
+              </div>
+
+              <div class="mt-6 mb-6 p-3 bg-gray-50 rounded-md border border-gray-200 text-sm text-gray-600">
+                <i class="fas fa-shield-alt text-gray-500 mr-1"></i>
+                Your transaction details are securely processed and not stored on our servers.
+              </div>
+
+              <div class="flex justify-center">
+                <button type="submit" class="submit-button">
+                  <i class="fas fa-search-dollar mr-2"></i> Verify Transaction
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+
+      <footer class="bg-gray-800 text-white py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center text-sm">
+          <p>&copy; 2025 Transaction Integrity Inspection System. All rights reserved.</p>
+          <div class="mt-2 space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a>
+            <a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a>
+            <a href="#" class="text-gray-400 hover:text-white transition">Security</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- JavaScript for auto-calculating new balance -->
+    <script>
+      const oldBalanceInput = document.getElementById('oldbalance');
+      const amountInput = document.getElementById('amount');
+      const newBalanceInput = document.getElementById('newbalance');
+
+      function updateNewBalance() {
+        const oldBalance = parseFloat(oldBalanceInput.value) || 0;
+        const amount = parseFloat(amountInput.value) || 0;
+        const newBalance = oldBalance - amount;
+        newBalanceInput.value = newBalance.toFixed(2);
+      }
+
+      oldBalanceInput.addEventListener('input', updateNewBalance);
+      amountInput.addEventListener('input', updateNewBalance);
+    </script>
+  </body>
+</html>
